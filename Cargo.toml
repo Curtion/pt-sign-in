@@ -7,4 +7,7 @@ edition = "2021"
 
 [dependencies]
 job_scheduler = "*"
-reqwest = { version = "0.11" }
+reqwest = { version = "0.11", features = ["blocking", "cookies"] }
+tokio = { version = "1", features = ["full"] }
+chrono = "0.4"
+clap = { version = "4.0.9", features = ["derive"] }
