@@ -11,4 +11,3 @@ reqwest = { version = "0.11", features = ["blocking", "cookies"] }
 tokio = { version = "1", features = ["full"] }
 chrono = "0.4"
 clap = { version = "4.0.9", features = ["derive"] }
-cloudflare-bypasser = "0.2.0"

@@ -1,6 +1,5 @@
 extern crate chrono;
 extern crate job_scheduler;
-extern crate cloudflare_bypasser;
 
 use chrono::prelude::*;
 use clap::Parser;
@@ -59,11 +58,9 @@ fn login_in(client: &Client, user: &str, password: &str) -> () {
         .form(&params)
         .send();
     match resp {
-        Ok(resp) => {
+        Ok(_) => {
             let dt = Local::now();
-            let text = resp.text();
-            println!("{},登录结果: {:?}", dt, text);
-            // println!("{},登录成功", dt);
+            println!("{},登录成功", dt);
         }
         Err(_) => {
             println!("登录失败");
@@ -73,27 +70,10 @@ fn login_in(client: &Client, user: &str, password: &str) -> () {
 }
 
 fn sign_in(client: &Client) {
-    let mut bypasser = {
-        cloudflare_bypasser::Bypasser::default()
-            .retry(30)
-            .random_user_agent(true)
-            .user_agent("Mozilla/5.0")
-            .wait(5)
-    };
-    let (cookie, user_agent);
-    loop {
-        if let Ok((c, ua)) =  bypasser.bypass("https://www.hdarea.co") {
-            cookie = c;
-            user_agent = ua;
-            break;
-        }
-    }
     let mut params = HashMap::new();
     params.insert("action", "sign_in");
     let resp = client
         .post("https://www.hdarea.co/sign_in.php")
-        .header(reqwest::header::COOKIE, cookie)
-        .header(reqwest::header::USER_AGENT, user_agent)
         .form(&params)
         .send();
     match resp {
